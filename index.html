@@ -3,20 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07152b">
 <title>EarnPaw BD</title>
 <style>
-body{margin:0;background:#07152b;color:white;font-family:Arial;text-align:center;padding:30px}
-.card{background:#10294b;border-radius:20px;padding:30px;max-width:400px;margin:auto}
-button{background:#19c37d;color:white;border:0;border-radius:12px;padding:15px 25px;font-size:18px}
-.paw{font-size:80px;margin:20px}
+:root{--bg:#07152b;--panel:#10294b;--panel2:#16365e;--text:#f5f8ff;--muted:#a8bbd8;--green:#19c37d;--gold:#ffd166;--line:#27466d}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#0a2040,var(--bg) 280px);color:var(--text);font-family:Arial,sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer}
+.app{max-width:520px;margin:auto;padding:18px 15px 95px}
+header{display:flex;align-items:center;gap:10px;margin:5px 0 18px}
+.logo{width:48px;height:48px;border-radius:16px;background:#1a3c65;display:grid;place-items:center;font-size:27px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{font-size:12px;color:var(--muted)}
+.pill{margin-left:auto;background:#17395e;border:1px solid var(--line);border-radius:30px;padding:8px 10px;font-size:11px;color:#cfe1ff}
+.card{background:linear-gradient(145deg,var(--panel),#0d2341);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:13px;box-shadow:0 8px 22px #0002}
+.balance-label{color:var(--muted);font-size:13px}
+.balance{font-size:34px;font-weight:800;margin:8px 0 15px}
+.coin{color:var(--gold)}
+.btn{border:0;border-radius:13px;padding:12px 15px;font-weight:700;background:var(--green);color:#052b1c}
+.btn.secondary{background:#1a3d65;color:#e8f1ff;border:1px solid #31577f}
+.btn.full{width:100%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:13px}
+.stat{background:#10294b;border:1px solid var(--line);border-radius:15px;padding:12px 9px;text-align:center}
+.stat strong{display:block;font-size:18px;margin-bottom:5px}
+.stat span{font-size:11px;color:var(--muted)}
+.section-title{font-size:16px;margin:20px 2px 11px}
+.tap-card{text-align:center;padding:20px}
+.paw-button{display:block;width:145px;height:145px;border-radius:50%;margin:12px auto 14px;background:radial-gradient(circle at 35% 25%,#2c5e8d,#14365b);border:4px solid #32618c;color:white;font-size:67px;box-shadow:0 0 0 8px #18385a55}
+.paw-button:active{transform:scale(.96)}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{background:#10294b;border:1px solid var(--line);border-radius:17px;padding:15px 13px;min-height:120px}
+.tile .emoji{font-size:25px}
+.tile h3{font-size:14px;margin:9px 0 5px}
+.tile p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.row{display:flex;align-items:center;gap:10px}
+.row .grow{flex:1;min-width:0}
+.task{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}
+.task:last-child{border-bottom:0}
+.task-icon{font-size:23px;width:35px;text-align:center}
+.task h3{font-size:13px;margin:0 0 4px}
+.task p{font-size:11px;color:var(--muted);margin:0}
+.task button{padding:9px 11px;font-size:12px}
+input{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:#081b33;color:white;margin:8px 0 10px}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);display:grid;grid-template-columns:repeat(5,1fr);gap:3px;background:#091a30f5;border-top:1px solid var(--line);padding:9px 5px calc(9px + env(safe-area-inset-bottom));backdrop-filter:blur(12px)}
+.nav button{border:0;background:transparent;color:#9fb4d2;font-size:10px;padding:6px 1px;border-radius:10px}
+.nav button span{display:block;font-size:19px;margin-bottom:4px}
+.nav button.active{color:#7cf0bd;background:#14395a}
+.page{display:none}.page.active{display:block}
+.notice{font-size:11px;color:#b7c9e2;text-align:center;line-height:1.5;margin:16px 8px}
+.toast{position:fixed;top:12px;left:50%;transform:translateX(-50%);background:#173e61;border:1px solid #38678c;padding:10px 15px;border-radius:12px;display:none;z-index:10;font-size:13px;max-width:90%}
+@media(min-width:480px){.app{padding-top:24px}.card{padding:21px}}
 </style>
 </head>
 <body>
-<div class="card">
-<h1>🐾 EarnPaw BD</h1>
-<p>Telegram Mini App</p>
-<div class="paw">🐾</div>
-<button onclick="alert('Demo: +1 Coin')">Tap & Earn</button>
+<div class="app">
+<header><div class="logo">🐾</div><div><h1>EarnPaw BD</h1><div class="sub">ছোট ছোট কাজ, ডেমো কয়েন জমাও</div></div><div class="pill">DEMO</div></header>
+
+<section class="page active" id="home">
+  <div class="card">
+    <div class="balance-label">আপনার ডেমো ব্যালেন্স</div>
+    <div class="balance"><span id="balance">0</span> <span class="coin">🪙</span></div>
+    <div class="row"><button class="btn" onclick="showPage('wallet')">Wallet দেখুন</button><button class="btn secondary" onclick="showPage('tasks')">কাজ দেখুন</button></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><strong id="today">0</strong><span>আজ আয়</span></div>
+    <div class="stat"><strong id="tapCount">0</strong><span>মোট ট্যাপ</span></div>
+    <div class="stat"><strong id="refCount">0</strong><span>রেফারেল</span></div>
+  </div>
+  <div class="card tap-card">
+    <div class="section-title" style="margin-top:0">🐾 Tap & Earn</div>
+    <div class="small">পাঞ্জায় ট্যাপ করলে ১টি ডেমো কয়েন যোগ হবে</div>
+    <button class="paw-button" onclick="tapEarn()" aria-label="ডেমো কয়েন যোগ করুন">🐾</button>
+    <div class="small">প্রতি ট্যাপে +1 ডেমো কয়েন</div>
+  </div>
+  <div class="section-title">দ্রুত মেনু</div>
+  <div class="tiles">
+    <button class="tile" onclick="dailyBonus()" style="text-align:left;color:inherit"><div class="emoji">🎁</div><h3>Daily Bonus</h3><p>প্রতিদিন একবার ডেমো বোনাস নিন</p></button>
+    <button class="tile" onclick="showPage('tasks')" style="text-align:left;color:inherit"><div class="emoji">📋</div><h3>Tasks & Offers</h3><p>ডেমো কাজের তালিকা দেখুন</p></button>
+    <button class="tile" onclick="showPage('referral')" style="text-align:left;color:inherit"><div class="emoji">👥</div><h3>Referral</h3><p>আমন্ত্রণ লিংক কপি করুন</p></button>
+    <button class="tile" onclick="showPage('wallet')" style="text-align:left;color:inherit"><div class="emoji">💰</div><h3>Wallet</h3><p>ব্যালেন্স ও demo withdraw</p></button>
+  </div>
+</section>
+
+<section class="page" id="tasks">
+  <div class="section-title">📋 Tasks & Offers</div>
+  <div class="card">
+    <div class="task"><div class="task-icon">📱</div><div class="grow"><h3>অ্যাপ পরিচিতি দেখুন</h3><p>ডেমো কাজ · +5 কয়েন</p></div><button class="btn" onclick="claimTask('intro',5,this)">Claim</button></div>
+    <div class="task"><div class="task-icon">⭐</div><div class="grow"><h3>EarnPaw BD দেখুন</h3><p>ডেমো কাজ · +3 কয়েন</p></div><button class="btn" onclick="claimTask('visit',3,this)">Claim</button></div>
+    <div class="task"><div class="task-icon">🐾</div><div class="grow"><h3>৫ বার Tap & Earn</h3><p>৫টি ট্যাপ হলে · +5 কয়েন</p></div><button class="btn" onclick="claimTapTask(this)">Claim</button></div>
+  </div>
+  <p class="small">এগুলো শুধু পরীক্ষা করার জন্য বানানো ডেমো কাজ। কোনো বাইরের কাজ সম্পন্ন হয়েছে বলে দাবি করে না।</p>
+</section>
+
+<section class="page" id="referral">
+  <div class="section-title">👥 Referral</div>
+  <div class="card">
+    <h3>বন্ধুদের আমন্ত্রণ জানান</h3>
+    <p class="small">আপনার বটের লিংক এখানে দেখানো হবে। এটি ডেমো—রেফারেল গণনা বা পুরস্কার সার্ভারে যাচাই করা হয় না।</p>
+    <input id="refLink" value="https://t.me/EarnPawBD_bot" readonly aria-label="বটের লিংক">
+    <button class="btn full" onclick="copyReferral()">লিংক কপি করুন</button>
+    <div class="small" style="margin-top:12px">ডেমো রেফারেল সংখ্যা: <strong id="refCount2">0</strong></div>
+  </div>
+</section>
+
+<section class="page" id="wallet">
+  <div class="section-title">💰 Wallet</div>
+  <div class="card">
+    <div class="balance-label">বর্তমান ডেমো ব্যালেন্স</div>
+    <div class="balance"><span id="walletBalance">0</span> <span class="coin">🪙</span></div>
+    <p class="small">এই কয়েনের কোনো বাস্তব আর্থিক মূল্য নেই। এই ডেমো থেকে টাকা তোলা যাবে না।</p>
+    <button class="btn secondary full" onclick="demoWithdraw()">Withdraw পরীক্ষা করুন</button>
+  </div>
+  <div class="card"><h3>লেনদেনের নিয়ম</h3><p class="small">আসল পেমেন্ট চালু করতে হলে নিরাপদ ব্যাকএন্ড, যাচাই করা আয়ের উৎস, এবং বাস্তব পেমেন্ট ব্যবস্থা তৈরি করতে হবে।</p></div>
+</section>
+
+<p class="notice">ডেমো সংস্করণ — কয়েন বাস্তব টাকা নয়। ব্যালেন্স এই ডিভাইসের ব্রাউজারে সংরক্ষিত থাকে।</p>
 </div>
+
+<nav class="nav" aria-label="প্রধান মেনু">
+<button class="active" onclick="showPage('home',this)"><span>🏠</span>Home</button>
+<button onclick="showPage('home',this);document.querySelector('.tap-card').scrollIntoView({behavior:'smooth'})"><span>🐾</span>Earn</button>
+<button onclick="showPage('tasks',this)"><span>📋</span>Tasks</button>
+<button onclick="showPage('referral',this)"><span>👥</span>Referral</button>
+<button onclick="showPage('wallet',this)"><span>💰</span>Wallet</button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const KEY='earnpaw_demo_v2';
+let data={balance:0,today:0,taps:0,referrals:0,bonusDate:'',claimed:[]};
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object')data={...data,...saved};}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}render();}
+function render(){
+ document.getElementById('balance').textContent=data.balance;
+ document.getElementById('walletBalance').textContent=data.balance;
+ document.getElementById('today').textContent=data.today;
+ document.getElementById('tapCount').textContent=data.taps;
+ document.getElementById('refCount').textContent=data.referrals;
+ document.getElementById('refCount2').textContent=data.referrals;
+ document.querySelectorAll('[data-claimed]').forEach(()=>{});
+}
+let toastTimer;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display='none',2400);}
+function tapEarn(){data.balance++;data.today++;data.taps++;save();toast('+1 ডেমো কয়েন যোগ হয়েছে! 🪙');}
+function dailyBonus(){
+ const day=new Date().toLocaleDateString('en-CA');
+ if(data.bonusDate===day){toast('আজকের ডেমো বোনাস নেওয়া হয়েছে।');return;}
+ data.bonusDate=day;data.balance+=10;data.today+=10;save();toast('+10 ডেমো কয়েন বোনাস! 🎁');
+}
+function claimTask(id,amount,btn){
+ if(data.claimed.includes(id)){toast('এই ডেমো কাজটি আগেই নেওয়া হয়েছে।');return;}
+ data.claimed.push(id);data.balance+=amount;data.today+=amount;save();btn.textContent='Done';btn.disabled=true;btn.style.opacity='.6';toast('+'+amount+' ডেমো কয়েন যোগ হয়েছে!');
+}
+function claimTapTask(btn){
+ if(data.claimed.includes('tap5')){toast('এই ডেমো কাজটি আগেই নেওয়া হয়েছে।');return;}
+ if(data.taps<5){toast('আগে Tap & Earn-এ ৫ বার ট্যাপ করুন।');return;}
+ data.claimed.push('tap5');data.balance+=5;data.today+=5;save();btn.textContent='Done';btn.disabled=true;btn.style.opacity='.6';toast('+5 ডেমো কয়েন যোগ হয়েছে!');
+}
+function showPage(id,btn){
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+ if(btn)btn.classList.add('active');else {const idx={home:0,tasks:2,referral:3,wallet:4}[id]??0;document.querySelectorAll('.nav button')[idx].classList.add('active');}
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+async function copyReferral(){
+ const text=document.getElementById('refLink').value;
+ try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text);toast('বটের লিংক কপি হয়েছে!');}else{document.getElementById('refLink').select();document.execCommand('copy');toast('লিংক কপি করার চেষ্টা করা হয়েছে।');}}catch(e){document.getElementById('refLink').select();toast('লিংকটি সিলেক্ট হয়েছে—Copy করুন।');}
+}
+function demoWithdraw(){toast('এটি ডেমো। বাস্তব টাকা তোলার ব্যবস্থা এখনো নেই।');}
+document.querySelectorAll('.task button').forEach(btn=>{if(btn.textContent==='Claim'&&btn.getAttribute('onclick')?.includes("'intro'")&&data.claimed.includes('intro')){btn.textContent='Done';btn.disabled=true;btn.style.opacity='.6'}if(btn.textContent==='Claim'&&btn.getAttribute('onclick')?.includes("'visit'")&&data.claimed.includes('visit')){btn.textContent='Done';btn.disabled=true;btn.style.opacity='.6'}if(btn.textContent==='Claim'&&btn.getAttribute('onclick')?.includes('claimTapTask')&&data.claimed.includes('tap5')){btn.textContent='Done';btn.disabled=true;btn.style.opacity='.6'}});
+render();
+try{if(window.Telegram&&window.Telegram.WebApp){window.Telegram.WebApp.ready();window.Telegram.WebApp.expand();}}catch(e){}
+</script>
 </body>
 </html>
